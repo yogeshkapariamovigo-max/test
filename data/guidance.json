@@ -1,0 +1,176 @@
+{
+    "baseSteps": [
+        {
+            "title": "Check for injuries and safety hazards",
+            "detail": "Call 911 if anyone is hurt or if the roadway is unsafe. Many insurers require a police report number when you file a claim."
+        },
+        {
+            "title": "Gather official documentation",
+            "detail": "Request the crash or incident report from responding authorities and note badge numbers. Most insurers will ask for this reference number."
+        },
+        {
+            "title": "Notify your insurance company promptly",
+            "detail": "Most policies require notice within 24 hours or as soon as practicable. Reporting quickly helps avoid delays or denied benefits."
+        }
+    ],
+    "coverageGuidance": {
+        "liability": [
+            {
+                "title": "Share liability details",
+                "detail": "Liability coverage pays for damage or injuries you cause to others. Provide your insurer with the other parties' contact, vehicle, and injury information so they can coordinate payments."
+            },
+            {
+                "title": "Confirm state minimums",
+                "detail": "Ask whether the claimed losses exceed your liability limits. If so, your adjuster can explain additional options such as personal umbrella coverage."
+            }
+        ],
+        "collision": [
+            {
+                "title": "Schedule an appraisal",
+                "detail": "Collision coverage usually requires an inspection by an approved adjuster or repair facility. Ask about virtual estimates or drive-in centers in your area."
+            },
+            {
+                "title": "Verify rental reimbursement",
+                "detail": "If you have rental car coverage, request approval before booking a vehicle so the daily limits are documented."
+            }
+        ],
+        "comprehensive": [
+            {
+                "title": "Document non-collision damage",
+                "detail": "Comprehensive claims often require photos of weather, animal, theft, or vandalism damage along with any police reports or witness statements."
+            }
+        ],
+        "pip": [
+            {
+                "title": "Track medical expenses",
+                "detail": "Personal Injury Protection reimburses medical bills and lost wages regardless of fault. Keep invoices, receipts, and disability notes to submit for reimbursement."
+            }
+        ],
+        "medpay": [
+            {
+                "title": "Submit medical bills promptly",
+                "detail": "Medical payments coverage has lower limits than PIP but can pay for co-pays and deductibles. Provide itemized bills within the time limit stated in your policy."
+            }
+        ],
+        "uninsured": [
+            {
+                "title": "Collect proof of uninsured status",
+                "detail": "Gather statements from the other driver or police notes confirming lack of insurance. Many states require a sworn affidavit before uninsured motorist benefits are released."
+            }
+        ],
+        "rideshare": [
+            {
+                "title": "Confirm app status",
+                "detail": "Rideshare companies provide different coverage depending on whether you were waiting for a request or had an active trip. Capture screenshots of your trip logs to share with the insurer."
+            }
+        ]
+    },
+    "incidentGuidance": {
+        "injury": [
+            {
+                "title": "Request medical records",
+                "detail": "Hospitals can provide discharge summaries and billing statements that most insurers require when evaluating injury claims."
+            }
+        ],
+        "property": [
+            {
+                "title": "Collect repair estimates",
+                "detail": "Most carriers accept two to three written estimates from licensed repair facilities. Upload them through your claim portal or share with your adjuster."
+            }
+        ],
+        "multiVehicle": [
+            {
+                "title": "Exchange complete information",
+                "detail": "Multiple vehicles increase liability questions. Gather each driver's policy number, insurer, and statement about fault for the adjuster."
+            }
+        ],
+        "singleVehicle": [
+            {
+                "title": "Document road and weather conditions",
+                "detail": "Photos of icy roads, potholes, or fallen trees help confirm a single-vehicle loss was unavoidable."
+            }
+        ],
+        "theft": [
+            {
+                "title": "File theft verification",
+                "detail": "Provide the police theft report case number and any recovery updates. Many insurers will not finalize payment until the waiting period in your state expires."
+            }
+        ],
+        "bike": [
+            {
+                "title": "Coordinate with health insurance",
+                "detail": "Cyclists may need to use health insurance first and then coordinate subrogation with the at-fault driver's insurer. Ask your adjuster about reimbursement procedures."
+            }
+        ],
+        "pedestrian": [
+            {
+                "title": "Review state PIP eligibility",
+                "detail": "Some no-fault states allow pedestrians to claim PIP benefits from the vehicle's insurer even without owning a car. Ask which forms are required."
+            }
+        ]
+    },
+    "documentChecklist": {
+        "title": "Documents most insurers request",
+        "items": [
+            "Accident or police report number",
+            "Photos or video of the scene and damage",
+            "Contact and insurance details for other parties",
+            "Medical bills, wage statements, and receipts",
+            "Repair estimates or invoices",
+            "Proof of ownership or loan/lease documents"
+        ]
+    },
+    "insurers": [
+        {
+            "name": "Allstate",
+            "keywords": [
+                "allstate"
+            ],
+            "phone": "1-800-255-7828",
+            "claimsUrl": "https://www.allstate.com/claims",
+            "hours": "24/7 claims line",
+            "notes": "Have your policy number and the incident date ready when calling."
+        },
+        {
+            "name": "GEICO",
+            "keywords": [
+                "geico"
+            ],
+            "phone": "1-800-861-8380",
+            "claimsUrl": "https://www.geico.com/claims/",
+            "hours": "24/7 claims service",
+            "notes": "GEICO's mobile app lets you upload photos for Express Services."
+        },
+        {
+            "name": "Progressive",
+            "keywords": [
+                "progressive"
+            ],
+            "phone": "1-800-776-4737",
+            "claimsUrl": "https://www.progressive.com/claims/",
+            "hours": "24/7",
+            "notes": "Ask about scheduling a Service Center appointment for repairs in select cities."
+        },
+        {
+            "name": "State Farm",
+            "keywords": [
+                "state farm",
+                "statefarm"
+            ],
+            "phone": "1-800-732-5246",
+            "claimsUrl": "https://www.statefarm.com/claims",
+            "hours": "24/7",
+            "notes": "You can also reach your local State Farm agent for help starting the claim."
+        },
+        {
+            "name": "Farmers Insurance",
+            "keywords": [
+                "farmers"
+            ],
+            "phone": "1-800-435-7764",
+            "claimsUrl": "https://www.farmers.com/claims/",
+            "hours": "24/7",
+            "notes": "Farmers allows online claim tracking once you register for a My Farmers account."
+        }
+    ]
+}
