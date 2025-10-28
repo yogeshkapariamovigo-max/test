@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accident Claim Guide</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content">
+      <h1>Find Your Path After an Accident</h1>
+      <p>Describe what happened and we’ll guide you to the next steps for your insurance claim.</p>
+      <form id="claim-helper" class="search-form" autocomplete="off">
+        <label class="visually-hidden" for="incident-description">Describe your accident</label>
+        <div class="search-form__input-group">
+          <input
+            id="incident-description"
+            type="search"
+            name="incident"
+            placeholder="E.g. Rear-end collision with another car, full coverage insurance"
+            required
+          />
+          <button type="submit">Get guidance</button>
+        </div>
+      </form>
+      <p class="hint">No personal data is stored. Use plain language — we’ll translate it into actionable advice.</p>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section aria-live="polite" aria-atomic="true" class="results" id="results">
+      <h2>Suggested next steps</h2>
+      <p class="placeholder">Provide details above to see personalized guidance.</p>
+      <div class="results__list" hidden></div>
+    </section>
+
+    <aside class="tips">
+      <h2>Need inspiration?</h2>
+      <ul>
+        <li>"Fender bender with minor vehicle damage, other driver at fault, liability insurance only"</li>
+        <li>"Single-car accident sliding on ice, comprehensive coverage"</li>
+        <li>"Injury while cycling struck by rideshare driver, personal injury protection"
+        </li>
+      </ul>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p>Disclaimer: This tool offers educational guidance. Always confirm details with your insurer and local regulations.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
