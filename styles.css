@@ -3,12 +3,13 @@
   font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.5;
   --bg: #0e1a2b;
-  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-bg: rgba(255, 255, 255, 0.92);
   --primary: #1c6ee8;
   --accent: #09bca7;
   --text: #1b2a41;
-  --muted: #5f7893;
+  --muted: #536680;
   --shadow: 0 20px 45px rgba(12, 36, 64, 0.25);
+  --border: rgba(28, 110, 232, 0.15);
 }
 
 * {
@@ -120,6 +121,29 @@ body {
   margin-top: 0;
 }
 
+.placeholder {
+  color: var(--muted);
+}
+
+.status-message {
+  margin: 0.5rem 0 1.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(28, 110, 232, 0.08);
+  color: var(--primary);
+  font-size: 0.95rem;
+}
+
+.status-message[hidden] {
+  display: none;
+}
+
+.status-message--error {
+  background: rgba(206, 38, 74, 0.1);
+  color: #c22640;
+  border: 1px solid rgba(206, 38, 74, 0.3);
+}
+
 .results__list {
   display: grid;
   gap: 1rem;
@@ -129,7 +153,7 @@ body {
   padding: 1.25rem;
   border-radius: 1rem;
   background: rgba(28, 110, 232, 0.08);
-  border: 1px solid rgba(28, 110, 232, 0.15);
+  border: 1px solid var(--border);
 }
 
 .results__item h3 {
@@ -140,6 +164,65 @@ body {
 
 .results__item p {
   margin: 0;
+  color: var(--muted);
+}
+
+.results__contacts {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.contact-card {
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  background: rgba(9, 188, 167, 0.08);
+}
+
+.contact-card h4 {
+  margin: 0 0 0.75rem;
+  color: var(--accent);
+}
+
+.contact-card dl {
+  margin: 0 0 0.75rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.contact-card dt {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.contact-card dd {
+  margin: 0;
+}
+
+.contact-card a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contact-card a:hover,
+.contact-card a:focus-visible {
+  text-decoration: underline;
+}
+
+.results__resources {
+  margin-top: 2rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+}
+
+.resource-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.5rem;
   color: var(--muted);
 }
 
@@ -157,6 +240,12 @@ body {
   background: rgba(12, 36, 64, 0.08);
   color: var(--muted);
   border-left: 4px solid var(--accent);
+}
+
+.data-note {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
 }
 
 .footer {
@@ -187,5 +276,9 @@ body {
 
   .search-form button {
     width: 100%;
+  }
+
+  .contact-card dl {
+    grid-template-columns: 1fr;
   }
 }

@@ -2,18 +2,25 @@ const form = document.getElementById('claim-helper');
 const input = document.getElementById('incident-description');
 const resultsSection = document.getElementById('results');
 const resultsList = resultsSection.querySelector('.results__list');
+const contactsPanel = resultsSection.querySelector('.results__contacts');
+const resourcesPanel = resultsSection.querySelector('.results__resources');
 const placeholder = resultsSection.querySelector('.placeholder');
+const statusMessage = resultsSection.querySelector('.status-message');
+
+const dataUrl = 'data/guidance.json';
+let guidanceDataPromise = null;
 
 const coverageMatchers = [
   { key: 'liability', matcher: /liability|third-?party/i },
   { key: 'collision', matcher: /collision/i },
   { key: 'comprehensive', matcher: /comprehensive|theft|weather|animal/i },
-  { key: 'pip', matcher: /personal injury protection|pip|medical payments|med-?pay/i },
+  { key: 'pip', matcher: /personal injury protection|pip|no[- ]?fault/i },
+  { key: 'medpay', matcher: /medical payments|med-?pay/i },
   { key: 'uninsured', matcher: /uninsured|underinsured/i },
   { key: 'rideshare', matcher: /rideshare|uber|lyft/i }
 ];
 
-const accidentMatchers = [
+const incidentMatchers = [
   { key: 'injury', matcher: /injur|hurt|hospital|ambulance|medical/i },
   { key: 'property', matcher: /damage|dent|bumper|fender|totaled|totalled/i },
   { key: 'multiVehicle', matcher: /other driver|another car|rear[- ]?end|intersection|t-bone|multi|pileup|two car|three car/i },
@@ -23,137 +30,30 @@ const accidentMatchers = [
   { key: 'pedestrian', matcher: /pedestrian|walker|crosswalk/i }
 ];
 
-const guidance = {
-  base: [
-    {
-      title: 'Document the accident',
-      detail:
-        'Take clear photos of vehicles, property, road conditions, and any visible injuries. Collect names, contact information, and insurance details from all parties involved.'
-    },
-    {
-      title: 'File an official report',
-      detail:
-        'If law enforcement arrived, request the report number. Otherwise, file one with local authorities or the DMV if required in your state.'
-    },
-    {
-      title: 'Contact your insurance provider',
-      detail:
-        'Notify your insurer as soon as possible. Share the incident details, other party information, and any documentation you gathered.'
-    }
-  ],
-  liability: [
-    {
-      title: 'Clarify coverage scope',
-      detail:
-        'Liability coverage generally pays for damage or injuries you cause to others. Ask your insurer what is covered and what out-of-pocket costs to expect.'
-    },
-    {
-      title: 'Coordinate with the other driver',
-      detail:
-        'Share your claim number with the other party so their repairs or medical bills can be processed promptly.'
-    }
-  ],
-  collision: [
-    {
-      title: 'Schedule a vehicle inspection',
-      detail:
-        'Collision coverage can pay for damage to your vehicle. Ask about preferred repair shops or whether you can choose your own.'
-    },
-    {
-      title: 'Review your deductible',
-      detail:
-        'Confirm the deductible amount you must pay before insurance covers the remaining repair costs.'
-    }
-  ],
-  comprehensive: [
-    {
-      title: 'Provide evidence of non-collision damage',
-      detail:
-        'Share photos or police reports that show theft, vandalism, weather damage, or animal strikes to support your comprehensive claim.'
-    }
-  ],
-  pip: [
-    {
-      title: 'Track medical treatment',
-      detail:
-        'Personal injury protection or medical payments coverage can reimburse medical bills and lost wages. Save receipts and doctor statements.'
-    }
-  ],
-  uninsured: [
-    {
-      title: 'Ask about uninsured motorist benefits',
-      detail:
-        'If the other driver lacks insurance, your uninsured/underinsured coverage may handle repairs and medical expenses. Provide any evidence you have that the other driver was uninsured.'
-    }
-  ],
-  rideshare: [
-    {
-      title: 'Confirm rideshare status',
-      detail:
-        'If you were driving for a rideshare company, confirm whether you were logged into the app and whether a trip was active. Coverage levels change based on your status.'
-    }
-  ],
-  injury: [
-    {
-      title: 'Seek medical evaluation',
-      detail:
-        'Even minor symptoms can worsen later. Visit a doctor promptly and keep records of diagnoses, treatment plans, and expenses.'
-    },
-    {
-      title: 'Consider legal advice',
-      detail:
-        'If injuries are serious or liability is disputed, consult a personal injury attorney to understand your rights.'
-    }
-  ],
-  property: [
-    {
-      title: 'Get repair estimates',
-      detail:
-        'Collect quotes from repair shops or contractors for damaged property to support your claim amount.'
-    }
-  ],
-  multiVehicle: [
-    {
-      title: 'Exchange detailed information',
-      detail:
-        'Multiple vehicles increase complexity. Confirm contact and insurance information for each driver and provide a clear incident narrative to your insurer.'
-    }
-  ],
-  singleVehicle: [
-    {
-      title: 'Explain contributing factors',
-      detail:
-        'If weather, animals, or road conditions caused the crash, document it thoroughly to show the damage was unavoidable.'
-    }
-  ],
-  theft: [
-    {
-      title: 'Submit supporting documents',
-      detail:
-        'Provide police reports, surveillance footage, or witness statements to prove theft or vandalism.'
-    }
-  ],
-  bike: [
-    {
-      title: 'Check personal coverage options',
-      detail:
-        'Cyclists may file under auto PIP, health insurance, or the driver’s liability policy. Ask each insurer how to coordinate benefits.'
-    }
-  ],
-  pedestrian: [
-    {
-      title: 'Identify available liability coverage',
-      detail:
-        'Pedestrians injured by vehicles can typically claim against the driver’s liability policy and may also use PIP or medical payments coverage if available.'
-    }
-  ]
-};
-
-function findMatches(description, matchers) {
-  return matchers.filter(({ matcher }) => matcher.test(description)).map(({ key }) => key);
+function loadGuidanceData() {
+  if (!guidanceDataPromise) {
+    guidanceDataPromise = fetch(dataUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Unable to load guidance data: ${response.status}`);
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        guidanceDataPromise = null;
+        throw error;
+      });
+  }
+  return guidanceDataPromise;
 }
 
-function buildResults(description) {
+function findMatches(description, matchers) {
+  return matchers
+    .filter(({ matcher }) => matcher.test(description))
+    .map(({ key }) => key);
+}
+
+function buildSteps(description, data) {
   const normalized = description.trim();
   if (!normalized) {
     return [];
@@ -161,29 +61,40 @@ function buildResults(description) {
 
   const matches = new Set([
     ...findMatches(normalized, coverageMatchers),
-    ...findMatches(normalized, accidentMatchers)
+    ...findMatches(normalized, incidentMatchers)
   ]);
 
-  const items = [...guidance.base];
+  const items = [...(data.baseSteps ?? [])];
+
   matches.forEach((key) => {
-    guidance[key]?.forEach((step) => items.push(step));
+    if (data.coverageGuidance?.[key]) {
+      data.coverageGuidance[key].forEach((step) => items.push(step));
+    }
+    if (data.incidentGuidance?.[key]) {
+      data.incidentGuidance[key].forEach((step) => items.push(step));
+    }
   });
 
   return items;
 }
 
-function renderResults(results) {
-  if (!results.length) {
+function detectInsurers(description, insurers = []) {
+  const normalized = description.toLowerCase();
+  return insurers.filter((insurer) =>
+    insurer.keywords?.some((keyword) => normalized.includes(keyword.toLowerCase()))
+  );
+}
+
+function renderSteps(steps) {
+  if (!steps.length) {
     resultsList.hidden = true;
-    placeholder.hidden = false;
     resultsList.replaceChildren();
     return;
   }
 
-  placeholder.hidden = true;
   resultsList.hidden = false;
   resultsList.replaceChildren(
-    ...results.map(({ title, detail }) => {
+    ...steps.map(({ title, detail }) => {
       const article = document.createElement('article');
       article.className = 'results__item';
       article.innerHTML = `<h3>${title}</h3><p>${detail}</p>`;
@@ -192,15 +103,105 @@ function renderResults(results) {
   );
 }
 
-form.addEventListener('submit', (event) => {
+function renderInsurers(insurers) {
+  if (!insurers.length) {
+    contactsPanel.hidden = true;
+    contactsPanel.replaceChildren();
+    return;
+  }
+
+  contactsPanel.hidden = false;
+  const heading = document.createElement('h3');
+  heading.textContent = 'Insurer contacts mentioned in your description';
+
+  const cards = insurers.map((insurer) => {
+    const card = document.createElement('article');
+    card.className = 'contact-card';
+    card.innerHTML = `
+      <h4>${insurer.name}</h4>
+      <dl>
+        <div><dt>Claims phone</dt><dd><a href="tel:${insurer.phone.replace(/[^+\d]/g, '')}">${insurer.phone}</a></dd></div>
+        <div><dt>File online</dt><dd><a href="${insurer.claimsUrl}" target="_blank" rel="noopener">${insurer.claimsUrl}</a></dd></div>
+        <div><dt>Availability</dt><dd>${insurer.hours}</dd></div>
+      </dl>
+      <p>${insurer.notes}</p>
+    `;
+    return card;
+  });
+
+  contactsPanel.replaceChildren(heading, ...cards);
+}
+
+function renderResources(checklist) {
+  if (!checklist?.items?.length) {
+    resourcesPanel.hidden = true;
+    resourcesPanel.replaceChildren();
+    return;
+  }
+
+  resourcesPanel.hidden = false;
+  const heading = document.createElement('h3');
+  heading.textContent = checklist.title ?? 'Helpful documents';
+
+  const list = document.createElement('ul');
+  list.className = 'resource-list';
+  checklist.items.forEach((item) => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    list.appendChild(li);
+  });
+
+  resourcesPanel.replaceChildren(heading, list);
+}
+
+function showStatus(message, isError = false) {
+  if (!statusMessage) return;
+  statusMessage.hidden = !message;
+  statusMessage.textContent = message ?? '';
+  statusMessage.classList.toggle('status-message--error', Boolean(isError));
+}
+
+form.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const description = input.value;
-  const steps = buildResults(description);
-  renderResults(steps);
+  const description = input.value.trim();
+
+  if (!description) {
+    placeholder.hidden = false;
+    renderSteps([]);
+    renderInsurers([]);
+    renderResources(null);
+    showStatus('Please describe the accident to receive guidance.', false);
+    return;
+  }
+
+  showStatus('Looking up guidance…');
+
+  try {
+    const data = await loadGuidanceData();
+    const steps = buildSteps(description, data);
+    const insurers = detectInsurers(description, data.insurers);
+
+    placeholder.hidden = true;
+    renderSteps(steps);
+    renderInsurers(insurers);
+    renderResources(data.documentChecklist);
+
+    if (!insurers.length) {
+      showStatus('No insurer names detected. Include your carrier for contact details.', false);
+    } else {
+      showStatus('', false);
+    }
+  } catch (error) {
+    console.error(error);
+    renderSteps([]);
+    renderInsurers([]);
+    renderResources(null);
+    placeholder.hidden = false;
+    showStatus('We could not load guidance data. Please refresh and try again.', true);
+  }
 });
 
-input.addEventListener('input', () => {
-  if (!input.value.trim()) {
-    renderResults([]);
-  }
+loadGuidanceData().catch((error) => {
+  console.error(error);
+  showStatus('Guidance data failed to load. Try again in a moment.', true);
 });
